@@ -70,9 +70,9 @@ if __name__== "__main__":
         opcao = main_menu()
 
         if opcao == "1":
-            nome = input ("Nome")
-            email = input("E-mail")
-            idade = int(input("idade"))
+            nome = input ("Nome:")
+            email = input("E-mail:")
+            idade = int(input("Idade:"))
             register(nome,email,idade)
             
         elif opcao == "2":
