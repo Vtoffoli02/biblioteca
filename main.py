@@ -1,30 +1,40 @@
+import sys
+import os
 
-from db.connection import create_table
-import services.student_services as service
+PROJECT_DIR = "C:\\Projetos\\studentRegistrationSQL\\"
 
+sys.path.append(os.path.abspath(PROJECT_DIR))
+
+from db.connection import create_tables
+import services.student_service as service
+
+#Menu principal
 def main_menu() -> str:
     print("\n Sistema de Cadastro de Alunos")
-    print("1, Cadastrar Aluno")
-    print("2, Listar Aluno")
-    print("3, Atualizar Aluno")
-    print("4, Excluir Aluno")
-    print("5, Sair")
+    print("1. Cadastrar Aluno")
+    print("2. Listar Aluno")
+    print("3. Atualizar Aluno")
+    print("4. Excluir Aluno")
+    print("5. Sair")
 
     opcao:str = input("Escolha uma opção:")
     return opcao
 
-if__name__=="__main__":
-    create_table()
+if __name__ == "__main__":
+    create_tables()
 
     while True:
-        opcao == "1":
-        name:str = input("Nome:")
-        email:str = input("E-mail:")
-        age:str = input("Idade:")
+        opcao = main_menu()
 
-        service.create_record(name,email,age)
+        if opcao == "1":
+            name:str = input("Nome:")
+            email:str = input("E-mail:")
+            age:int = int(input("Idade:"))
+            service.create_record(name,email,age)
 
-    elif opcao == "3":
-        id = int(input("Informe o ID do aluno que vc quer atualizar"))
-        new_name = input("Novo nome")
-        new_email = input("Novo e-mail")
+        elif opcao == "5":
+            break
+        else:
+            print("Opção Invalida")
+
+    
