@@ -1,43 +1,28 @@
-import sqlite3
-from contextlib import contextmanager
+from peewee import SqliteDatabase
+from pathlib import Path # biblioteca para lidar com diretorios, para evitar caminhos hard-code
 
-DB_NAME = "C:\Projetos\studentRegistrationSQL\databases\students.db"
+import os
 
-@contextmanager
-def get_cursor():
-    conexao = sqlite3.connect(DB_NAME)
-    cursor = conexao.cursor()
+#define a raiz do projeto
+PROJECT_ROOT = Path(__file__).parent.parent
 
-    try:
-        yield cursor
-        conexao.commit()    
-    except sqlite3.ProgrammingError as e:
-        conexao.rollback()
-        print(f"ocorreu um erro de programação: {e}")
-        raise
-    except sqlite3.OperationalError as e:
-        conexao.rollback()
-        print(f"ocorreu um erro do D. operacional{e}")
-        raise
-    except sqlite3.DatabaseError as e:
-        conexao.rollback()
-        print(f"ocorreu um erro de banco de dados: {e}")
-        raise
-    except Exception as e:
-        conexao.rollback()
-        print(f"erro inesperado: {e}")
-        raise
-    finally:
-        conexao.close()
+#define onde sera criado o banco de dados
+DB_DIR = PROJECT_ROOT / "Databases"
 
-    def create_table():
-        with get_cursor() as cursor:
-            cursor.execute("""
-                CREATE TABLE IF NOT EXISTS aluno(
-                             id INTEGER PRIMARY KEY AUTOINCREMENT,
-                             nome TEXT NOT NULL,
-                             email TEXT NOT NULL UNIQUE,
-                             idade INTEGER
-                        )
-                """)
-   
+#cria o diretorio se ele nao existir
+DB_DIR.mkdir(exist_ok=True)
+
+#caminho completo para o arquivo .db (meu banco de dados)
+DB_PATH = DB_DIR / "student02.db"
+
+#cria de fato o banco de dados
+db = SqliteDatabase(DB_PATH)
+
+def connect_db():
+    from models.student import Student #importar a classe Student la da pasta models
+    db.connect() #abre a conexao com o banco de dados
+    db.create_tables([Student], safe=True)
+
+def close_db(exeption=None):
+    if not db.is_closed():
+        db.close()

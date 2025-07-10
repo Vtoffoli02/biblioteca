@@ -1,13 +1,11 @@
-#essa classe/objeto aluno é OO Orientado à objetos
+from peewee import Model, CharField, IntegerField, AutoField
+from db.connection import db
 
-class Student:
+class Student(Model):
+    name = CharField()
+    age = IntegerField()
+    email = CharField(unique=True)
 
-    #metodo construtor da classe Aluno/Student e ele é um metodo especial
-    def __init__(self, name, email,age,id=None):
-        self.id = id
-        self.name = name
-        self.email = email
-        self.age = age
+    class Meta:
+        database = db
 
-    def __repr__(self):
-        return f"Student(id={self.id}, Name={self.name}, Email={self. email}, Age={self.age}"
