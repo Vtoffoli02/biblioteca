@@ -1,15 +1,12 @@
+#sempre que for criar um novo ambiente virtual
 python3 -m venv meu_env
 
 #linux
 source meu_env/bin/activate
 
 #windows
-vc esta dentro de C:\Projetos
-executar o comando de ativacao do ambiente virtual
+vc estando dentro de c:\projetos executar o comando do ambiente virtual
+meu_env\scripts\activate
 
-meu_env\Script\activate
-
-devera ficar assim o prompt
-(meu_env)C:\Projetos
-
-
+devera ficar assim o prompt:
+(meu_env) c:\projetos>

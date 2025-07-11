@@ -1,9 +1,9 @@
 from peewee import SqliteDatabase
-from pathlib import Path # biblioteca para lidar com diretorios, para evitar caminhos hard-code
+from pathlib import Path #biblioteca para lidar com diretorios para evitar caminhos
 
 import os
 
-#define a raiz do projeto
+#Define a raiz do projeto
 PROJECT_ROOT = Path(__file__).parent.parent
 
 #define onde sera criado o banco de dados
@@ -13,14 +13,14 @@ DB_DIR = PROJECT_ROOT / "Databases"
 DB_DIR.mkdir(exist_ok=True)
 
 #caminho completo para o arquivo .db (meu banco de dados)
-DB_PATH = DB_DIR / "student02.db"
+DB_PATH = DB_DIR / "students02.db"
 
 #cria de fato o banco de dados
 db = SqliteDatabase(DB_PATH)
 
 def connect_db():
-    from models.student import Student #importar a classe Student la da pasta models
-    db.connect() #abre a conexao com o banco de dados
+    from models.student import Student #importar a clase estudent pasata models
+    db.connect()
     db.create_tables([Student], safe=True)
 
 def close_db(exeption=None):

@@ -1,60 +1,60 @@
 import sys
-import os
+from pathlib import Path
 
-PROJECT_DIR = "C:\\Projetos\\studentRegistrationSQL\\"
 
-sys.path.append(os.path.abspath(PROJECT_DIR))
 
-from db.connection import create_tables
-import services.student_service as service
+#pega o caminho do arquivo atual no caso main.py
+current_file = Path(__file__)
 
-def show_students():
-    students = service.display_record()
+#define a raiz do projeto
+project_root = Path(__file__).parent.parent
 
-    for student in students:
-        print(f"{student.id} - {student.name} - {student.email} - {student.age}")
+#adiciona a raiz do projeto no path do python
+sys.path.append(str(project_root))
 
-#Menu principal
-def main_menu() -> str:
-    print("\n Sistema de Cadastro de Alunos")
+from db.connection import connect_db, close_db
+from services.student_service import StudentService
+
+def show_menu():
+    print("\n===== Sistema de cadastro de Alunos ====")
+
     print("1. Cadastrar Aluno")
     print("2. Listar Aluno")
-    print("3. Atualizar Aluno")
     print("4. Excluir Aluno")
     print("5. Sair")
 
-    opcao:str = input("Escolha uma opção:")
-    return opcao
+    print("=========================================")
 
-if __name__ == "__main__":
-    create_tables()
+def main():
+    connect_db()
+
+    service = StudentService()
 
     while True:
-        opcao = main_menu()
+        show_menu()
+
+        opcao = input("Escolha a opção:")
 
         if opcao == "1":
-            name:str = input("Nome:")
-            email:str = input("E-mail:")
-            age:int = int(input("Idade:"))
+            name = input("Informe o nome:")
+            age = int(input("Informe a idade:"))
+            email = input("Informe o email:")
+            #chama a segunda camada(service) e passa os dados
+            service.register_student(name,age,email)
 
-            service.create_record(name,email,age)
-            show_students()
-        
-        elif opcao == "2":
-            show_students()
+            print("Aluno Cadastrado com sucesso!!")
 
-        elif opcao == "3":
-            id:int = int(input("Informe o id do aluno que vc deseja atualizar: "))
-            newName:str = input("Novo nome: ")
-            newEmail:str = input("Novo email: ")
-            newAge:int = int(input("Nova idade: "))
-            print("Aluno atualizado com sucesso")            
-            service.atualizar_alunos
-            show_students()
+        elif opcao == "4":
+            id = int(input("Informe o id para deletar:"))
+            service.remove_student(id)
 
         elif opcao == "5":
+            print("Saindo do sistema")
             break
         else:
-            print("Opção Invalida")
+            print("opcao invalida")
 
-    
+        close_db() #fecha a conexao com o db
+
+if __name__ == "__main__":
+    main()
